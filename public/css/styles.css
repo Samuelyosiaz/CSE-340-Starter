@@ -4,3 +4,175 @@
 *:after {
   box-sizing: border-box;
 }
+
+* {
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+
+#top-header {
+  display: flex;
+  justify-content: space-between;
+}
+.siteName a{
+  font-size: 50px;
+  text-decoration: none;
+  color: black;
+}
+
+body {
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+/******** NAVIGATION ******/
+
+#tools a {
+  text-decoration: none;
+  color: black;
+}
+
+#wrapper nav {
+  max-width: 100%;
+  background-color: rgba(0, 0, 0, 0.856);
+}
+
+#wrapper nav ul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+#wrapper nav ul li {
+  padding: 1rem 2rem;
+  color: white;
+}
+
+
+/******HERO******/
+
+#hero-float {
+  color:deepskyblue;
+  line-height: 1.2;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  top: clamp(1rem, 10%, 3rem);
+  left: clamp(1rem, 5%, 3rem);
+  font-size: 1.2rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.2rem);
+}
+
+#hero-float h3{
+  line-height: 1;
+  margin: 0;
+}
+
+#hero-float img {
+  width: 70%;
+  justify-self: flex-start;
+}
+
+.hero-section {
+  position: relative;
+}
+
+.hero-section img {
+  display: block;
+  justify-self: center;
+  width: 100%;
+
+}
+
+
+/*****DELOREAN REVIEWS*****/
+#delorean-reviews ul li {
+  line-height: 2.5;
+}
+
+
+/****UPGRADES******/
+.products {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr);
+  gap: 20px;
+}
+
+.item{
+  padding: 10px;
+  text-align: center;
+}
+
+.item a {
+  display: block;
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+.item-img {
+  background-color: deepskyblue;
+  border: 1px solid black;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+@media screen and (min-width: 768px) {
+    html {
+      background-image: url(/images/site/checkerboard.jpg)
+    }
+    body {
+      padding: 2rem;
+      margin: 1rem 5rem;
+      background-color: white;
+      border: 5px solid deepskyblue;
+      border-radius: 10px;
+    }
+    #hero-float {
+      font-size: 1.5rem;
+      left: 15%;
+    }
+
+    body main {
+      display: grid;
+      gap: 5px;
+      grid-template-columns: 1fr 1fr;
+      
+      grid-template-areas: 
+      "welcome welcome" 
+      "hero hero"
+      "upgrades reviews";
+    }
+
+    .welcome {
+      grid-area: welcome;
+    }
+
+    .hero-section {
+      grid-area: hero;
+    }
+
+    #delorean-reviews {
+      grid-area: reviews;
+    }
+
+    #upgrades {
+      grid-area: upgrades;
+    }
+
+    #hero-float { 
+      color:deepskyblue; 
+      line-height: 1.2; 
+      background-color: rgba(255, 255, 255, 0.5); 
+      position: absolute; 
+      top: 10%; left: 5%; 
+      font-size: clamp(1rem, 3vw, 3rem);; 
+      padding: .5rem; }
+
+      #hero-float img {
+      width: 80%
+    }
+}
