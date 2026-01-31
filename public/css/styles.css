@@ -13,11 +13,12 @@
 #top-header {
   display: flex;
   justify-content: space-between;
+  
 }
 .siteName a{
-  font-size: 50px;
   text-decoration: none;
   color: black;
+  font-size: clamp(1rem, 10vw, 4rem);
 }
 
 body {
@@ -33,19 +34,34 @@ body {
 }
 
 #wrapper nav {
-  max-width: 100%;
+  
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.856);
+
 }
 
 #wrapper nav ul {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   list-style: none;
+  padding-left: 0;
 }
 
 #wrapper nav ul li {
-  padding: 1rem 2rem;
+  padding: 0.6rem 0.5rem;
   color: white;
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
+}
+
+nav ul li a,
+nav ul li a:visited {
+  color: white;          /* el color que quieras */
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
 }
 
 
@@ -80,7 +96,6 @@ body {
   display: block;
   justify-self: center;
   width: 100%;
-
 }
 
 
@@ -146,6 +161,12 @@ body {
       "hero hero"
       "upgrades reviews";
     }
+
+    #wrapper nav ul li {
+      padding: 1rem;
+      color: white;
+      font-size: 1.5rem;
+      } 
 
     .welcome {
       grid-area: welcome;

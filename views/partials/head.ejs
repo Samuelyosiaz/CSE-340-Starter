@@ -5,4 +5,10 @@
     <meta name="title" content="<%- title %> | CSE 340 App" >
     <title><%= title %> | CSE 340 App"</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <% if (typeof customCSS !== 'undefined' && customCSS) { %>
+        <link rel="stylesheet" href="<%= customCSS %>">
+    <% } %>
+    <% if (typeof itemCSS !== 'undefined' && itemCSS) { %>
+        <link rel="stylesheet" href="<%= itemCSS %>">
+    <% } %>
 </head>
