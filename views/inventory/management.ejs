@@ -5,4 +5,19 @@
 <br><br>
 <a href="/inv/add-inventory">Add New Vehicle</a>
 </div>
+<div>
 <%- messages() %>
+</div>
+<div>
+<br><br>
+<h2>Manage Inventory</h2>
+<br><p>Choose a classification to see the inventory items</p>
+<br>
+<%- classificationSelect%>
+<br>
+<table id="inventoryDisplay"></table>
+<br>
+<noscript>JavaScript must be enabled to use this page.</noscript>
+</div>
+
+<script src="../../js/inventory.js"></script>

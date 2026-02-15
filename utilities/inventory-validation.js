@@ -82,4 +82,23 @@ validate.checkInventoryData = async (req, res, next) => {
     next()
 }
 
+//This function is to handle an error data in the edit-inventory view
+validate.checkUpdateData = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        let select = await utilities.buildClassificationList(req.body.classification_id)
+        res.render("inventory/edit-inventory", {
+            errors,
+            title: "Edit" + inv_make + inv_model,
+            nav,
+            select,
+            ...req.body, 
+            addItemsCSS: "/css/addItems.css"
+        })
+        return
+    }
+    next()
+}
+
 module.exports = validate

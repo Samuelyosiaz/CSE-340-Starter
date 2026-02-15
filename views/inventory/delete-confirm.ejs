@@ -1,0 +1,40 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+<div class="form">
+    <%- messages()%>
+    <form action="/inv/delete-confirm" method="post" id="deleteForm">
+        <h1>Confirm Deletion - The delete is permanent.</h1>
+        <br>
+        <% if (errors && !errors.isEmpty()) { %>
+            <p><strong>Errors found:</strong></p>
+
+            <ul class="notice">
+            <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+            <% }) %>
+            </ul>
+            <% } %>
+        <br>
+        <label for="inv_make">Make</label><br>
+        <input type="text" id="inv_make" name="inv_make" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{3,}$" required value="<%= locals.inv_make %>" placeholder=" " readonly>
+        <br>
+        <label for="inv_model">Model</label><br>
+        <input type="text" id="inv_model" name="inv_model" pattern="^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ]{3,}$" required value="<%= locals.inv_model %>" placeholder=" " readonly>
+        <br>
+        <label for="inv_price">Price</label><br>
+        <input type="text" id="inv_price" name="inv_price"pattern="^\d+(\.\d+)?$" inputmode="decimal" required value="<%= locals.inv_price %>" placeholder=" " readonly>
+        <br>
+        <label for="inv_year">Year</label><br>
+        <input type="text" name="inv_year" id="inv_year" pattern="^(19|20)\d{2}$" inputmode="numeric" required value="<%= locals.inv_year %>" placeholder=" " readonly>
+        <br>
+        <input type="hidden" name="inv_id"
+        <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
+        <br><br>
+        <button type="submit" name="submit" >Delete Vehicle</button>
+    </form>
+</div>
+

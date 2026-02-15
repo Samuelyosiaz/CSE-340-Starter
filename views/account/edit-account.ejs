@@ -1,0 +1,60 @@
+<!-- filepath: c:\Users\samue\OneDrive\Documentos\Proyectos de programación\CSE 340\CSE-340-Starter\views\account\edit-account.ejs -->
+<div>
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+<%- messages() %>
+<div class="form">
+<form id="updateAccountForm" action="/account/edit-account" method="post">
+<% if (errors && !errors.isEmpty()) { %>
+            <p><strong>Errors found:</strong></p>
+            <ul class="notice">
+            <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+            <% }) %>
+            </ul>
+            <% } %>
+<div class="input-group">
+<label for="account_firstname">First Name</label>
+<input type="text" id="account_firstname" name="account_firstname" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Only letters without special characters" required value="<%= locals.accountData.account_firstname %>" placeholder=" "></div>
+<br>
+<div class="input-group">
+<label for="account_lastname">Last Name</label>
+<input type="text" id="account_lastname" name="account_lastname" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Only letters without special characters" required value="<%= locals.accountData.account_lastname %>" placeholder=" "></div>
+<br>
+<div class="input-group">
+<label for="account_email">Email</label>
+<input type="email" id="account_email" name="account_email" required value="<%= locals.accountData.account_email %>" placeholder=" "></div>
+<br>
+<div class="input-group">
+<input type="hidden" name="account_id" value="<%= locals.accountData.account_id %>">
+<button type="submit" name="submit">Update Account</button></div>
+</form>
+</div>
+</div>
+<div class="form">
+<h2>Change Password</h2>
+<form id="updateAccountForm" method="post" action="/account/update-password">
+<p>Password must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</p><br>
+<p>*Note your original password will be changed</p>
+<div class="input-group">
+<label for="account_password">Password</label>
+    <input
+      type="password"
+      id="account_password"
+      name="account_password"
+      required placeholder=" "
+      pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+    ></div>
+<input type="hidden" name="account_id" value="<%= locals.accountData.account_id %>">
+<br>
+<span id="passwordButton">Show password</span>
+<br>
+<button type="submit" name="submit">Change Password</button>
+</form>
+</div>
+
+<noscript>JavaScript must be enabled to use this page.</noscript>
+<script src="../../js/account-update.js"></script>

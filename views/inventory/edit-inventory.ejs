@@ -1,0 +1,59 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+<div class="form">
+    <%- messages()%>
+    <form action="/inv/edit-inventory" method="post" id="updateForm">
+        <h1>Vehicle Info</h1>
+        <br>
+        <% if (errors && !errors.isEmpty()) { %>
+            <p><strong>Errors found:</strong></p>
+
+            <ul class="notice">
+            <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+            <% }) %>
+            </ul>
+            <% } %>
+        <br>
+        <label for="classification_id">Classification</label>
+        <%- classificationSelect%>
+        <br>
+        <label for="inv_make">Make</label><br>
+        <input type="text" id="inv_make" name="inv_make" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{3,}$" required value="<%= locals.inv_make %>" placeholder=" ">
+        <br>
+        <label for="inv_model">Model</label><br>
+        <input type="text" id="inv_model" name="inv_model" pattern="^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ]{3,}$" required value="<%= locals.inv_model %>" placeholder=" ">
+        <br>
+        <label for="inv_description">Description</label><br>
+        <textarea name="inv_description" id="inv_description" minlength="10" maxlength="500" required placeholder=" "><%= locals.inv_description %></textarea>
+        <br>
+        <label for="inv_image">Image Path</label><br>
+        <input type="text" name="inv_image" id="inv_image" value="<%= locals.inv_image %>" readonly>
+        <br>
+        <label for="inv_thumbnail">Thumbnail Path</label><br>
+        <input type="text" name="inv_thumbnail" id="inv_thumbnail" value="<%= locals.inv_thumbnail %>" readonly>
+        <br>
+        <label for="inv_price">Price</label><br>
+        <input type="text" id="inv_price" name="inv_price"pattern="^\d+(\.\d+)?$" inputmode="decimal" required value="<%= locals.inv_price %>" placeholder=" ">
+        <br>
+        <label for="inv_year">Year</label><br>
+        <input type="text" name="inv_year" id="inv_year" pattern="^(19|20)\d{2}$" inputmode="numeric" required value="<%= locals.inv_year %>" placeholder=" ">
+        <br>
+        <label for="inv_miles">Miles</label><br>
+        <input type="text" name="inv_miles" id="inv_miles" pattern="^\d+$" inputmode="numeric" required value="<%= locals.inv_miles %>" placeholder=" ">
+        <br>
+        <label for="inv_color">Color</label><br>
+        <input type="text" name="inv_color" id="inv_color" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{3,20}$" required value="<%= locals.inv_color %>" placeholder=" ">
+        <input type="hidden" name="inv_id"
+        <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
+        <br><br>
+        <button type="submit" name="submit" disabled>Update Vehicle</button>
+    </form>
+</div>
+
+<noscript>JavaScript must be enabled to use this page.</noscript>
+<script src="../../js/inv-update.js"></script>
