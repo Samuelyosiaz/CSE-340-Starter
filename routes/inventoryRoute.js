@@ -6,6 +6,12 @@ const utilities = require("../utilities/")
 const classValidate = require("../utilities/classification-validation")
 const invValidate = require("../utilities/inventory-validation")
 
+// Route to build search/filter view (public route)
+router.get("/search",
+    invValidate.filterRules(),
+    invValidate.checkFilterData,
+    utilities.handleErrors(invController.buildFilteredInventory));
+
 // Route to build management view 
 router.get("/",
     utilities.checkLogin,

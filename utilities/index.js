@@ -107,6 +107,24 @@ Util.buildClassificationList = async function (classification_id = null) {
     classificationList += "</select>"
     return classificationList
 }
+
+/* **************************************
+* Build the makes dropdown list
+* ************************************ */
+Util.buildMakesList = async function (selectedMake = null) {
+  let data = await invModel.getDistinctMakes()
+  let makesList = '<select name="inv_make" id="makesList">'
+  makesList += '<option value="">All brands</option>'
+  data.forEach((row) => {
+    makesList += '<option value="' + row.inv_make + '"'
+    if (selectedMake != null && row.inv_make == selectedMake) {
+      makesList += ' selected'
+    }
+    makesList += '>' + row.inv_make + '</option>'
+  })
+  makesList += '</select>'
+  return makesList
+}
   
 /* ****************************************
 * Middleware to check token validity

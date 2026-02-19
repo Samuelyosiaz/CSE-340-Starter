@@ -306,6 +306,45 @@ invCont.deleteItem = async function (req, res, next) {
   }
 }
 
+/* ***************************
+ *  Build filtered inventory view (search)
+ * ************************** */
+invCont.buildFilteredInventory = async function (req, res, next) {
+  const { inv_make, minPrice, maxPrice, minMiles, maxMiles } = req.query
+  
+  // Get filtered data
+  const data = await invModel.getInventoryByFilters(
+    inv_make,
+    minPrice,
+    maxPrice,
+    minMiles,
+    maxMiles
+  )
+  
+  // Build the grid with results
+  const grid = await utilities.buildClassificationGrid(data)
+  
+  // Get navigation
+  let nav = await utilities.getNav()
+  
+  // Build makes dropdown with selected value
+  const makesDropdown = await utilities.buildMakesList(inv_make)
+  
+  res.render("./inventory/search", {
+    title: "Search Vehicles",
+    nav,
+    grid,
+    makesDropdown,
+    inv_make: inv_make || '',
+    minPrice: minPrice || '',
+    maxPrice: maxPrice || '',
+    minMiles: minMiles || '',
+    maxMiles: maxMiles || '',
+    errors: null,
+    customCSS: "/css/search.css"
+  })
+}
+
 
 
 module.exports = invCont

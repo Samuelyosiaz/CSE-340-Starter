@@ -111,5 +111,77 @@ async function updateInventory(
   }
 }
 
+/* ***************************
+ *  Get inventory by filters (make, price range, miles range)
+ * ************************** */
+async function getInventoryByFilters(make, minPrice, maxPrice, minMiles, maxMiles) {
+  try {
+    let sql = `SELECT * FROM public.inventory AS i 
+               JOIN public.classification AS c 
+               ON i.classification_id = c.classification_id 
+               WHERE 1=1`
+    const params = []
+    let paramCount = 1
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, registerClassification , registerInventory , updateInventory, deleteInventoryItem};
+    // Add make filter if provided
+    if (make && make !== '') {
+      sql += ` AND i.inv_make = $${paramCount}`
+      params.push(make)
+      paramCount++
+    }
+
+    // Add minimum price filter if provided
+    if (minPrice && minPrice !== '') {
+      sql += ` AND i.inv_price >= $${paramCount}`
+      params.push(minPrice)
+      paramCount++
+    }
+
+    // Add maximum price filter if provided
+    if (maxPrice && maxPrice !== '') {
+      sql += ` AND i.inv_price <= $${paramCount}`
+      params.push(maxPrice)
+      paramCount++
+    }
+
+    // Add minimum miles filter if provided
+    if (minMiles && minMiles !== '') {
+      sql += ` AND i.inv_miles >= $${paramCount}`
+      params.push(minMiles)
+      paramCount++
+    }
+
+    // Add maximum miles filter if provided
+    if (maxMiles && maxMiles !== '') {
+      sql += ` AND i.inv_miles <= $${paramCount}`
+      params.push(maxMiles)
+      paramCount++
+    }
+
+    sql += ` ORDER BY i.inv_make, i.inv_model`
+
+    const data = await pool.query(sql, params)
+    return data.rows
+  } catch (error) {
+    console.error("getInventoryByFilters error: " + error)
+    throw error
+  }
+}
+
+/* ***************************
+ *  Get distinct makes for dropdown
+ * ************************** */
+async function getDistinctMakes() {
+  try {
+    const data = await pool.query(
+      "SELECT DISTINCT inv_make FROM public.inventory ORDER BY inv_make"
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getDistinctMakes error: " + error)
+    throw error
+  }
+}
+
+
+module.exports = {getClassifications, getInventoryByClassificationId, getInventoryById, registerClassification , registerInventory , updateInventory, deleteInventoryItem, getInventoryByFilters, getDistinctMakes};

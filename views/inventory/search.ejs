@@ -1,0 +1,71 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<div class="search-container">
+    <%- messages() %>
+    
+    <form action="/inv/search" method="get" id="search-form">
+        <h2>Filter Vehicles</h2>
+        
+        
+        <div class="filter-group" id="form-select">
+            <label for="makesList">Make</label>
+            <%- makesDropdown %>
+        </div>
+        
+        <div class="filter-group">
+            <h3>Price Range</h3>
+            <div class="range-inputs">
+                <div class="input-wrapper">
+                    <label for="minPrice">Minimun Price ($)</label>
+                    <input type="number" id="minPrice" name="minPrice" min="0" step="1" 
+                           value="<%= minPrice %>" placeholder="Ej: 10000">
+                </div>
+                <div class="input-wrapper">
+                    <label for="maxPrice">Maximum Price ($)</label>
+                    <input type="number" id="maxPrice" name="maxPrice" min="0" step="1" 
+                           value="<%= maxPrice %>" placeholder="Ej: 50000">
+                </div>
+            </div>
+        </div>
+        
+        <div class="filter-group">
+            <h3>Miles Range</h3>
+            <div class="range-inputs">
+                <div class="input-wrapper">
+                    <label for="minMiles">Minimun Miles</label>
+                    <input type="number" id="minMiles" name="minMiles" min="0" step="1" 
+                           value="<%= minMiles %>" placeholder="Ej: 0">
+                </div>
+                <div class="input-wrapper">
+                    <label for="maxMiles">Maximum Miles</label>
+                    <input type="number" id="maxMiles" name="maxMiles" min="0" step="1" 
+                           value="<%= maxMiles %>" placeholder="Ej: 100000">
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button type="submit" class="filter-btn">Filter</button>
+            <a href="/inv/search" class="clear-btn">Clear Filters</a>
+        </div>
+        <div class="errors-message">
+        <% if (errors && !errors.isEmpty()) { %>
+            <p><strong>Errors found:</strong></p>
+            <ul class="notice">
+            <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+            <% }) %>
+            </ul>
+        <% } %>
+        </div>
+    </form>
+</div>
+
+<div class="results-container">
+    <h2>Results</h2>
+    <%- grid %>
+</div>

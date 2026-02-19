@@ -1,5 +1,5 @@
 const utilities = require(".")
-const { body, validationResult } = require("express-validator")
+const { body, query, validationResult } = require("express-validator")
 const validate = {}
 
 validate.inventoryRules = () => {
@@ -45,7 +45,7 @@ validate.inventoryRules = () => {
         .notEmpty()
         .withMessage("Year is required")
         .matches(/^(19|20)\d{2}$/)
-        .withMessage("Year must be a valid 4-digit year"),
+        .withMessage("Year must be a valid 4-digit yeamilesr"),
 
         body("inv_miles")
         .trim()
@@ -95,6 +95,94 @@ validate.checkUpdateData = async (req, res, next) => {
             select,
             ...req.body, 
             addItemsCSS: "/css/addItems.css"
+        })
+        return
+    }
+    next()
+}
+
+/* ***************************
+ *  Filter validation rules
+ * ************************** */
+validate.filterRules = () => {
+    return [
+        query("inv_make")
+        .optional({ checkFalsy: true })
+        .trim()
+        .escape(),
+
+        query("minPrice")
+        .optional({ checkFalsy: true })
+        .trim()
+        .matches(/^\d+(\.\d+)?$/)
+        .withMessage("Minimum price must be a valid number")
+        .isFloat({ min: 0 })
+        .withMessage("Minimum price must be greater than or equal to 0"),
+
+        query("maxPrice")
+        .optional({ checkFalsy: true })
+        .trim()
+        .matches(/^\d+(\.\d+)?$/)
+        .withMessage("Maximum price must be a valid number")
+        .isFloat({ min: 0 })
+        .withMessage("Maximum price must be greater than or equal to 0")
+        .custom((value, { req }) => {
+            if (req.query.minPrice && value && parseFloat(value) < parseFloat(req.query.minPrice)) {
+                throw new Error('Maximum price must be greater than minimum price')
+            }
+            return true
+        }),
+
+        query("minMiles")
+        .optional({ checkFalsy: true })
+        .trim()
+        .matches(/^\d+$/)
+        .withMessage("Minimum miles must be a valid integer")
+        .isInt({ min: 0 })
+        .withMessage("Minimum miles must be greater than or equal to 0"),
+
+        query("maxMiles")
+        .optional({ checkFalsy: true })
+        .trim()
+        .matches(/^\d+$/)
+        .withMessage("Maximum miles must be a valid integer")
+        .isInt({ min: 0 })
+        .withMessage("Maximum miles must be greater than or equal to 0")
+        .custom((value, { req }) => {
+            if (req.query.minMiles && value && parseInt(value) < parseInt(req.query.minMiles)) {
+                throw new Error('Maximum miles must be greater than minimum miles')
+            }
+            return true
+        })
+    ]
+}
+
+/* ***************************
+ *  Check filter data and return errors or continue
+ * ************************** */
+validate.checkFilterData = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        const makesDropdown = await utilities.buildMakesList(req.query.inv_make)
+        const invModel = require("../models/inventory-model")
+        
+        // Get all inventory to show on error
+        const data = await invModel.getInventoryByFilters(null, null, null, null, null)
+        const grid = await utilities.buildClassificationGrid(data)
+        
+        res.render("inventory/search", {
+            errors,
+            title: "Search Vehicles",
+            nav,
+            grid,
+            makesDropdown,
+            inv_make: req.query.inv_make || '',
+            minPrice: req.query.minPrice || '',
+            maxPrice: req.query.maxPrice || '',
+            minMiles: req.query.minMiles || '',
+            maxMiles: req.query.maxMiles || '',
+            customCSS: "/css/search.css"
         })
         return
     }
